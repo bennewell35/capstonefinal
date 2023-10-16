@@ -1,22 +1,28 @@
-"""
-URL configuration for littlelemoncapstone1 project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
+from Restaurant.views import BookingViewSet
+from Restaurant import views as restaurant_views  # Rename the 'views' module to avoid conflicts
+from rest_framework.authtoken.views import obtain_auth_token  # Import obtain_auth_token
+
+# Define the DefaultRouter and register the BookingViewSet
+router = routers.DefaultRouter()
+router.register(r'booking', BookingViewSet)
+router.register(r'users', restaurant_views.UserViewSet)  # Register the UserViewSet
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('', include('Restaurant.urls')),
+    path('api/', include(router.urls)),  # Include the BookingViewSet URLs
+    path('littlelemoncapstone/', include('littlelemoncapstoneAPI.urls')),  # Add this pattern
+    
+    # Url patterns for Djoser endpoints
+    path('menu-items/', restaurant_views.MenuItemsView.as_view(), name='menu-items-list'),
+    path('menu-items/<int:pk>/', restaurant_views.SingleMenuItemView.as_view(), name='menu-item-detail'),
+    path('message/', restaurant_views.msg, name='message'),
+    
+    # Add Djoser URL routes
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),
 ]
