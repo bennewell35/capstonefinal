@@ -29,7 +29,6 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,24 +36,47 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'restaurant1',
+    'Restaurant',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'littlelemoncapstoneAPI',
+    'djoser',  # Add 'djoser' app here
 ]
 
+# Rest Framework settings for Token and Session authentication
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',  # Add Session Authentication
+    ],
+    # ...
+}
+
+# ... (the rest of your settings)
+
+# Djoser settings
+DJOSER = {
+    "USER_ID_FIELD": "username",  # Add USER_ID_FIELD as per your step 3
+}
+
+# Specific allowed hosts (production example)
+ALLOWED_HOSTS = ['yourdomain.com', 'anotherdomain.com']
+
+# Wildcard to allow all hosts (development/testing example)
+# ALLOWED_HOSTS = ['*']
+
+# Other settings...
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # ... other middleware ...
+    'django.contrib.sessions.middleware.SessionMiddleware',  # Add this line
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # Add this line
+    'django.contrib.messages.middleware.MessageMiddleware',  # Add this line
+    # ... other middleware ...
 ]
-
-ROOT_URLCONF = 'littlelemoncapstone1.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',  # Ensure this line is present
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -68,19 +90,16 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'littlelemoncapstone1.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'MollyBen',
+        'USER': 'ben_molly',
+        'PASSWORD': 'MollyBen..12!!',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -122,3 +141,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
